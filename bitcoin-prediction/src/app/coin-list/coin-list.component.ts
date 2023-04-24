@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class CoinListComponent implements OnInit {
 
   bannerData: any = [];
-  currency : string = "INR"
+  currency : string = "EUR"
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['symbol', 'current_price', 'price_change_percentage_24h', 'market_cap'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;

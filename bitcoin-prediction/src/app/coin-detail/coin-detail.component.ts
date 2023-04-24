@@ -1,9 +1,10 @@
-import { CurrencyService } from './../service/currency.service';
-import { ApiService } from './../service/api.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {CurrencyService} from '../service/currency.service';
+import {ApiService} from '../service/api.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {ChartConfiguration, ChartType} from 'chart.js';
 import {BaseChartDirective} from 'ng2-charts'
+
 @Component({
   selector: 'app-coin-detail',
   templateUrl: './coin-detail.component.html',
@@ -11,10 +12,10 @@ import {BaseChartDirective} from 'ng2-charts'
 })
 export class CoinDetailComponent implements OnInit {
 
-  coinData : any;
+  coinData: any;
   coinId !: string;
-  days : number = 30;
-  currency : string = "INR";
+  days: number = 30;
+  currency: string = "EUR";
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
@@ -39,61 +40,67 @@ export class CoinDetailComponent implements OnInit {
     },
 
     plugins: {
-      legend: { display: true },
+      legend: {display: true},
     }
   };
   public lineChartType: ChartType = 'line';
   @ViewChild(BaseChartDirective) myLineChart !: BaseChartDirective;
 
 
-  constructor(private api : ApiService, private activatedRoute : ActivatedRoute, private currencyService : CurrencyService) { }
+  constructor(
+    private api: ApiService,
+    private activatedRoute: ActivatedRoute,
+    private currencyService: CurrencyService
+  ) {
+  }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(val=>{
+    this.activatedRoute.params.subscribe(val => {
       this.coinId = val['id'];
     });
     this.getCoinData();
     this.getGraphData(this.days);
     this.currencyService.getCurrency()
-    .subscribe(val=>{
-      this.currency = val;
-      this.getGraphData(this.days);
-      this.getCoinData();
-    })
-  }
-
-  getCoinData(){
-    this.api.getCurrencyById(this.coinId)
-    .subscribe(res=>{
-
-      console.log(this.coinData);
-      if(this.currency === "USD"){
-        res.market_data.current_price.inr = res.market_data.current_price.usd;
-        res.market_data.market_cap.inr = res.market_data.market_cap.usd;
-      }
-      res.market_data.current_price.inr = res.market_data.current_price.inr;
-      res.market_data.market_cap.inr = res.market_data.market_cap.inr;
-      this.coinData = res;
-    })
-  }
-  getGraphData(days:number){
-    this.days = days
-    this.api.getGraphicalCurrencyData(this.coinId,this.currency,this.days)
-    .subscribe(res=>{
-      setTimeout(() => {
-        this.myLineChart.chart?.update();
-      }, 200);
-      this.lineChartData.datasets[0].data = res.prices.map((a:any)=>{
-        return a[1];
-      });
-      this.lineChartData.labels = res.prices.map((a:any)=>{
-        let date = new Date(a[0]);
-        let time = date.getHours() > 12 ?
-        `${date.getHours() - 12}: ${date.getMinutes()} PM` :
-        `${date.getHours()}: ${date.getMinutes()} AM`
-        return this.days === 1 ? time : date.toLocaleDateString();
+      .subscribe(val => {
+        this.currency = val;
+        this.getGraphData(this.days);
+        this.getCoinData();
       })
-    })
+  }
+
+  getCoinData(): void {
+    this.api.getCurrencyById(this.coinId)
+      .subscribe(res => {
+        console.log(this.coinData);
+        console.log(res.market_data.current_price)
+        if (this.currency === "USD") {
+          res.market_data.current_price.eur = res.market_data.current_price.usd;
+          res.market_data.market_cap.eur = res.market_data.market_cap.usd;
+        }
+        res.market_data.current_price.eur = res.market_data.current_price.eur;
+        res.market_data.market_cap.eur = res.market_data.market_cap.eur;
+        this.coinData = res;
+      })
+  }
+
+  getGraphData(days: number) {
+    this.days = days
+    this.api.getGraphicalCurrencyData(this.coinId, this.currency, this.days)
+      .subscribe(res => {
+        setTimeout(() => {
+          this.myLineChart.chart?.update();
+        }, 200);
+        this.lineChartData.datasets[0].data = res.prices.map((a: any) => {
+          return a[1];
+        });
+        this.lineChartData.labels = res.prices.map((a: any) => {
+          let date: Date = new Date(a[0]);
+          let time: String = date.getHours() > 12 ?
+            `${date.getHours() - 12}: ${date.getMinutes()} PM` :
+            `${date.getHours()}: ${date.getMinutes()} AM`
+          return this.days === 1 ? time : date.toLocaleDateString();
+        })
+      })
   }
 
 }
