@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,12 @@ export class BitcoinPredictionService {
   constructor(private http: HttpClient) {
   }
 
-  getBitcoinPrediction(): void/* Observable<any> */ {
-    // TODO Call the service to predict the price
+  getBitcoinPrediction(): Observable<any> {
+    // TODO exception handling here
     const url = 'http://127.0.0.1:5000/predict-bitcoin-price';
     this.http.get(url).subscribe((response) => {
-      console.log(response);
+      return response;
     });
+    return of(0)
   }
 }

@@ -72,14 +72,16 @@ export class CoinDetailComponent implements OnInit {
   }
 
   predictBitcoinPrice(): void {
-    this.bitcoinApi.getBitcoinPrediction();
+    this.bitcoinApi.getBitcoinPrediction().subscribe(response => {
+      // TODO Make some exception handler
+      console.log(response)
+      this.predictedPrice = response;
+    });
   }
 
   getCoinData(): void {
     this.api.getCurrencyById(this.coinId)
       .subscribe(res => {
-        console.log(this.coinData);
-        console.log(res.market_data.current_price)
         if (this.currency === "USD") {
           res.market_data.current_price.eur = res.market_data.current_price.usd;
           res.market_data.market_cap.eur = res.market_data.market_cap.usd;
