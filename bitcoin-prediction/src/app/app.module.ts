@@ -16,6 +16,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {NgChartsModule} from 'ng2-charts';
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {NgChartsModule} from 'ng2-charts';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    NgChartsModule
+    NgChartsModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

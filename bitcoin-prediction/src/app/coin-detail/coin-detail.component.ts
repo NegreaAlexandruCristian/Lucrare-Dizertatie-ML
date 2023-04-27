@@ -1,9 +1,10 @@
-import {CurrencyService} from '../service/currency.service';
-import {ApiService} from '../service/api.service';
+import {CurrencyService} from '../crypto-api/currency.service';
+import {ApiService} from '../crypto-api/api.service';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ChartConfiguration, ChartType} from 'chart.js';
 import {BaseChartDirective} from 'ng2-charts'
+import {BitcoinPredictionService} from "../bitcoin-prediction/bitcoin-prediction.service";
 
 @Component({
   selector: 'app-coin-detail',
@@ -16,6 +17,7 @@ export class CoinDetailComponent implements OnInit {
   coinId !: string;
   days: number = 30;
   currency: string = "EUR";
+  predictedPrice: number = 0;
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
@@ -49,6 +51,7 @@ export class CoinDetailComponent implements OnInit {
 
   constructor(
     private api: ApiService,
+    private bitcoinApi: BitcoinPredictionService,
     private activatedRoute: ActivatedRoute,
     private currencyService: CurrencyService
   ) {
@@ -66,6 +69,10 @@ export class CoinDetailComponent implements OnInit {
         this.getGraphData(this.days);
         this.getCoinData();
       })
+  }
+
+  predictBitcoinPrice(): void {
+    this.bitcoinApi.getBitcoinPrediction();
   }
 
   getCoinData(): void {

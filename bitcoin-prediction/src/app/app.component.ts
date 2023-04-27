@@ -1,4 +1,4 @@
-import {CurrencyService} from './service/currency.service';
+import {CurrencyService} from './crypto-api/currency.service';
 import {Component} from '@angular/core';
 
 @Component({

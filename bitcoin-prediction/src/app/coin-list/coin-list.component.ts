@@ -1,5 +1,5 @@
-import { CurrencyService } from '../service/currency.service';
-import { ApiService } from '../service/api.service';
+import { CurrencyService } from '../crypto-api/currency.service';
+import { ApiService } from '../crypto-api/api.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';

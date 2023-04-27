@@ -5,6 +5,11 @@
         <img [src]="coinData?.image?.large" alt="">
         <h3 class="text-center" style="font-size: 23px;">{{coinData?.name}}</h3>
         <h2 [innerHtml]="coinData?.description?.en.split('. ')[0]"></h2>
+        <button mat-raised-button color="primary" (click)="predictBitcoinPrice()">Predict The Price</button>
+        <mat-form-field appearance="fill">
+          <mat-label>Your prediction will be displayed here..</mat-label>
+          <input matInput placeholder="Enter text" disabled>
+        </mat-form-field>
         <div class="more-detail">
           <span class="title">Rank: </span> <span class="value">{{coinData?.market_cap_rank}}</span><br>
           <span class="title">Current Price: </span> <span
