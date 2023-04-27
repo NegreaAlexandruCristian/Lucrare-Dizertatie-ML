@@ -1,0 +1,5 @@
+# Exculde node_modules
+/node_modules
+
+# Exclude venv (library root)
+/venv
