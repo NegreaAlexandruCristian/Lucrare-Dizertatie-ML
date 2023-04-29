@@ -71,12 +71,21 @@ export class CoinDetailComponent implements OnInit {
       })
   }
 
-  predictBitcoinPrice(): void {
-    this.bitcoinApi.getBitcoinPrediction().subscribe(response => {
-      // TODO Make some exception handler
-      console.log(response)
-      this.predictedPrice = response;
-    });
+  predictBitcoinPrice(bitcoinPrice: number): void {
+    try {
+      this.bitcoinApi.getBitcoinPrediction(bitcoinPrice).subscribe(
+        (response): void => {
+          console.log(response);
+          this.predictedPrice = response.bitcoinPrice;
+          console.log(this.predictedPrice);
+        },
+        (error): void => {
+          console.log(`Error: ${error}`);
+        }
+      );
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
   }
 
   getCoinData(): void {

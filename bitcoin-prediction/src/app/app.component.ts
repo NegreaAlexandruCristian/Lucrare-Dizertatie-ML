@@ -8,6 +8,7 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   selectedCurrency: string = "EUR";
+  title: string = "Crypto Checker";
 
   constructor(private currencyService: CurrencyService) {
 

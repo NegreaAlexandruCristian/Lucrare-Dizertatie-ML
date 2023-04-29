@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {catchError} from 'rxjs/operators';
+import {Observable, throwError} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +12,15 @@ export class BitcoinPredictionService {
   constructor(private http: HttpClient) {
   }
 
-  getBitcoinPrediction(): Observable<any> {
+  getBitcoinPrediction(bitcoinPrice: number): Observable<any> {
     // TODO exception handling here
-    const url = 'http://127.0.0.1:5000/predict-bitcoin-price';
-    this.http.get(url).subscribe((response) => {
-      return response;
-    });
-    return of(0)
+    const url = environment.FLUSK_SERVER + '/predict-bitcoin-price';
+    const body = {bitcoinPrice: bitcoinPrice};
+    return this.http.post(url, body).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('An error occurred:', error);
+        return throwError((): string => 'Something went wrong');
+      })
+    );
   }
 }
